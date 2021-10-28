@@ -1,3 +1,4 @@
 import Home from "./Home";
+import SignInPage from "./SignInPage";
 
-export { Home };
+export { Home, SignInPage };

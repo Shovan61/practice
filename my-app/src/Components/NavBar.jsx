@@ -1,18 +1,28 @@
 import React from "react";
 import styled from "styled-components";
 import { AiOutlineShoppingCart } from "react-icons/ai";
+import { useHistory } from "react-router-dom";
 
 function NavBar() {
+  let history = useHistory();
+
+  const gotoSignIn = () => {
+    history.push("/sign");
+  };
+  const gotoHome = () => {
+    history.push("/");
+  };
+
   return (
     <Root>
       <Logo>
-        <h1>Natori</h1>
+        <h1 onClick={gotoHome}>Natori</h1>
       </Logo>
 
       <NavContent>
         <span>SHOP</span>
         <span>CONTACT</span>
-        <span>SIGN IN</span>
+        <span onClick={gotoSignIn}>SIGN IN</span>
         <AiOutlineShoppingCart />
       </NavContent>
     </Root>
@@ -40,6 +50,7 @@ const Logo = styled.div`
   & h1 {
     font-family: "Parisienne", cursive;
     color: #ff5e00;
+    cursor: pointer;
   }
 `;
 
