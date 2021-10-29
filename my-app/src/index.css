@@ -9,6 +9,10 @@
   list-style: none;
 }
 
+:root {
+  --orange: #ff5e00;
+}
+
 a {
   color: inherit;
 }

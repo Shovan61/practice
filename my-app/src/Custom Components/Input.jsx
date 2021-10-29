@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
 function Input(props) {
-  const { width, lebel, type } = props.props;
+  const { width, lebel, type, what, handleSignInChange } = props.props;
   const [isFocused, setisFocused] = useState(false);
   const [value, setvalue] = useState("");
 
