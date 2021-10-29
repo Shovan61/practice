@@ -1,10 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import Input from "../Custom Components/Input";
 
 function SignInPage() {
+  const [signInState, setsignInState] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+
+  const [signUpState, setsignUpState] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPass: "",
+  });
+
+  const handleChange = () => {};
+
   return (
     <Root>
-      <SignIn>Sign In</SignIn>
+      <SignIn>
+        <Input
+          props={{
+            width: 40,
+            lebel: "Name",
+            value: signInState.name,
+            type: "text",
+          }}
+        />
+      </SignIn>
       <SignUp>Sign UP</SignUp>
     </Root>
   );
@@ -20,6 +45,7 @@ const Root = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-around;
+  padding: 0 2rem;
 `;
 
 const SignIn = styled.div`
