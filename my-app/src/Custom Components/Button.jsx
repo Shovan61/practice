@@ -13,7 +13,7 @@ export default Button;
 
 const Wrapper = styled.div`
   margin-top: 5rem;
-  padding: 1rem 4rem;
+  padding: 0.5rem 2rem;
   border-radius: 15px;
   background-color: ${(props) => props.color};
   color: white;

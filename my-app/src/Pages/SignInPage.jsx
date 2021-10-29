@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Button from "../Custom Components/Button";
+import { signInWithGoogle } from "../Firebase//Firebase.utils";
 
 function SignInPage() {
   const [signInState, setsignInState] = useState({
@@ -60,7 +61,7 @@ function SignInPage() {
           />
           <label htmlFor="password">Password: </label>
           <input
-            type="text"
+            type="password"
             name="password"
             value={signInState.password}
             onChange={(e) => handleInputChange(e.target.name, e.target.value)}
@@ -68,12 +69,16 @@ function SignInPage() {
           <div
             style={{
               display: "flex",
-              width: "100%",
+              width: "80%",
               justifyContent: "space-evenly",
             }}
           >
             <Button text="Sign In" color="default" />
-            <Button text="Sign In With Google" color="#4774fc" />
+            <Button
+              text="Sign In With Google"
+              color="#4774fc"
+              // onClick={signInWithGoogle}
+            />
           </div>
         </form>
       </Sign>
@@ -105,14 +110,14 @@ function SignInPage() {
           />
           <label htmlFor="password">Password: </label>
           <input
-            type="text"
+            type="password"
             name="password"
             value={signUpState.password}
             onChange={(e) => handleSignUpChange(e.target.name, e.target.value)}
           />
           <label htmlFor="confirm">Confirm Password: </label>
           <input
-            type="text"
+            type="password"
             name="confirmPass"
             value={signUpState.confirmPass}
             onChange={(e) => handleSignUpChange(e.target.name, e.target.value)}
