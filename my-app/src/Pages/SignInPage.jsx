@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Button from "../Custom Components/Button";
-import { signInWithGoogle } from "../Firebase//Firebase.utils";
+import { useAuthContext } from "../Context/Context";
 
 function SignInPage() {
+  const { googleSignIn, currentUser } = useAuthContext();
+
   const [signInState, setsignInState] = useState({
     name: "",
     email: "",
@@ -29,7 +31,8 @@ function SignInPage() {
     });
   };
 
-  console.log(signUpState);
+  console.log(googleSignIn);
+  console.log(currentUser);
 
   return (
     <Root>
@@ -77,7 +80,7 @@ function SignInPage() {
             <Button
               text="Sign In With Google"
               color="#4774fc"
-              // onClick={signInWithGoogle}
+              onClick={() => googleSignIn()}
             />
           </div>
         </form>
