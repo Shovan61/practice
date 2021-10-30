@@ -1,9 +1,14 @@
 import React from "react";
 import styled from "styled-components";
 
-function Button({ text, color }) {
+function Button({ text, color, disabled = false }) {
   return (
-    <Wrapper color={color === "default" ? "#ff5e00" : color}>{text}</Wrapper>
+    <Wrapper
+      disabled={disabled}
+      color={color === "default" ? "#ff5e00" : color}
+    >
+      {text}
+    </Wrapper>
   );
 }
 
@@ -11,7 +16,7 @@ export default Button;
 
 // Style
 
-const Wrapper = styled.div`
+const Wrapper = styled.button`
   margin-top: 5rem;
   padding: 0.5rem 2rem;
   border-radius: 15px;

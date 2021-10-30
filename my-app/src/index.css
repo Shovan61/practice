@@ -29,3 +29,11 @@ body {
   background: rgba(3, 0, 0, 0.411);
   border-radius: 6px;
 }
+
+.button {
+  padding: 0.5rem 2rem;
+  background-color: #ff5e00;
+  color: white;
+  border-radius: 15px;
+  cursor: pointer;
+}

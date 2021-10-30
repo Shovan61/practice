@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Button from "../Custom Components/Button";
 import { useAuthContext } from "../Context/Context";
 
 function SignInPage() {
-  const { googleSignIn, currentUser } = useAuthContext();
+  const { googleSignIn, currentUser, registerUser } = useAuthContext();
 
   const [signInState, setsignInState] = useState({
     name: "",
@@ -19,6 +19,21 @@ function SignInPage() {
     confirmPass: "",
   });
 
+  const [isPasswordMatched, setisPasswordMatched] = useState(false);
+  const [showMatched, setshowMatched] = useState(false);
+
+  useEffect(() => {
+    if (
+      signUpState.password !== "" &&
+      signUpState.password !== signUpState.confirmPass
+    ) {
+      setisPasswordMatched(true);
+    } else if (signUpState.password === signUpState.confirmPass) {
+      setisPasswordMatched(false);
+      setshowMatched(true);
+    }
+  }, [signUpState.confirmPass]);
+
   const handleInputChange = (name, newValue) => {
     setsignInState((prev) => {
       return { ...prev, [name]: newValue };
@@ -31,9 +46,21 @@ function SignInPage() {
     });
   };
 
-  console.log(googleSignIn);
-  console.log(currentUser);
+  const onSignInSubmit = (e) => {
+    e.preventDefault();
 
+    const values = {
+      name: signInState.name,
+      email: signInState.email,
+      password: signInState.password,
+    };
+    registerUser(values)
+      .then((res) => console.log(res))
+      .catch((err) => alert(err));
+    // console.log(values);
+  };
+
+  console.log(showMatched);
   return (
     <Root>
       <Sign>
@@ -54,6 +81,7 @@ function SignInPage() {
             name="name"
             value={signInState.name}
             onChange={(e) => handleInputChange(e.target.name, e.target.value)}
+            required
           />
           <label htmlFor="email">Email: </label>
           <input
@@ -61,6 +89,7 @@ function SignInPage() {
             name="email"
             value={signInState.email}
             onChange={(e) => handleInputChange(e.target.name, e.target.value)}
+            required
           />
           <label htmlFor="password">Password: </label>
           <input
@@ -68,22 +97,26 @@ function SignInPage() {
             name="password"
             value={signInState.password}
             onChange={(e) => handleInputChange(e.target.name, e.target.value)}
+            required
           />
-          <div
+          {/* <div
             style={{
               display: "flex",
               width: "80%",
               justifyContent: "space-evenly",
             }}
-          >
-            <Button text="Sign In" color="default" />
-            <Button
-              text="Sign In With Google"
-              color="#4774fc"
-              onClick={() => googleSignIn()}
-            />
-          </div>
+          > */}
+          <button style={{ marginTop: "6rem" }} className="button">
+            Sign In
+          </button>
+          {/* </div> */}
         </form>
+        <button
+          style={{ marginTop: "4rem", backgroundColor: "#4774fc" }}
+          className="button"
+        >
+          Sign In With Google
+        </button>
       </Sign>
       <Sign>
         <h1>Sign Up</h1>
@@ -103,6 +136,7 @@ function SignInPage() {
             name="name"
             value={signUpState.name}
             onChange={(e) => handleSignUpChange(e.target.name, e.target.value)}
+            required
           />
           <label htmlFor="email">Email: </label>
           <input
@@ -110,6 +144,7 @@ function SignInPage() {
             name="email"
             value={signUpState.email}
             onChange={(e) => handleSignUpChange(e.target.name, e.target.value)}
+            required
           />
           <label htmlFor="password">Password: </label>
           <input
@@ -117,6 +152,7 @@ function SignInPage() {
             name="password"
             value={signUpState.password}
             onChange={(e) => handleSignUpChange(e.target.name, e.target.value)}
+            required
           />
           <label htmlFor="confirm">Confirm Password: </label>
           <input
@@ -124,8 +160,22 @@ function SignInPage() {
             name="confirmPass"
             value={signUpState.confirmPass}
             onChange={(e) => handleSignUpChange(e.target.name, e.target.value)}
+            required
           />
-          <Button text="Sign Up" color="default" />
+          {signUpState.password !== "" && isPasswordMatched === true ? (
+            <span style={{ color: "red" }}>Password doesn't match</span>
+          ) : null}
+          {signUpState.password !== "" && showMatched && (
+            <span style={{ color: "green" }}>Password matched</span>
+          )}
+
+          <button
+            disabled={showMatched}
+            style={{ marginTop: "7rem" }}
+            className="button"
+          >
+            Sign Up
+          </button>
         </form>
       </Sign>
     </Root>
