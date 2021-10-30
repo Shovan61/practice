@@ -19,7 +19,7 @@ function SignInPage() {
     confirmPass: "",
   });
 
-  const [isPasswordMatched, setisPasswordMatched] = useState(false);
+  const [isDisabled, setisDisabled] = useState(false);
   const [showMatched, setshowMatched] = useState(false);
 
   useEffect(() => {
@@ -27,12 +27,16 @@ function SignInPage() {
       signUpState.password !== "" &&
       signUpState.password !== signUpState.confirmPass
     ) {
-      setisPasswordMatched(true);
-    } else if (signUpState.password === signUpState.confirmPass) {
-      setisPasswordMatched(false);
+      setisDisabled(true);
+      setshowMatched(false);
+    } else if (
+      signUpState.password !== "" &&
+      signUpState.password === signUpState.confirmPass
+    ) {
+      setisDisabled(false);
       setshowMatched(true);
     }
-  }, [signUpState.confirmPass]);
+  }, [signUpState.confirmPass, signUpState.password]);
 
   const handleInputChange = (name, newValue) => {
     setsignInState((prev) => {
@@ -50,17 +54,28 @@ function SignInPage() {
     e.preventDefault();
 
     const values = {
-      name: signInState.name,
-      email: signInState.email,
-      password: signInState.password,
+      name: signUpState.name,
+      email: signUpState.email,
+      password: signUpState.password,
     };
     registerUser(values)
-      .then((res) => console.log(res))
+      .then((res) => {
+        console.log(res);
+      })
       .catch((err) => alert(err));
-    // console.log(values);
+    setsignUpState((prev) => {
+      return {
+        ...prev,
+        name: "",
+        email: "",
+        password: "",
+        confirmPass: "",
+      };
+    });
+    setshowMatched(false);
   };
 
-  console.log(showMatched);
+  // console.log(showMatched);
   return (
     <Root>
       <Sign>
@@ -129,6 +144,7 @@ function SignInPage() {
             width: "100%",
           }}
           action=""
+          onSubmit={onSignInSubmit}
         >
           <label htmlFor="name">Full Name: </label>
           <input
@@ -162,15 +178,15 @@ function SignInPage() {
             onChange={(e) => handleSignUpChange(e.target.name, e.target.value)}
             required
           />
-          {signUpState.password !== "" && isPasswordMatched === true ? (
+          {signUpState.password !== "" && isDisabled === true ? (
             <span style={{ color: "red" }}>Password doesn't match</span>
           ) : null}
-          {signUpState.password !== "" && showMatched && (
+          {showMatched ? (
             <span style={{ color: "green" }}>Password matched</span>
-          )}
+          ) : null}
 
           <button
-            disabled={showMatched}
+            disabled={!showMatched}
             style={{ marginTop: "7rem" }}
             className="button"
           >
