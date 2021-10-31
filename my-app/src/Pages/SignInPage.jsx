@@ -2,12 +2,13 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Button from "../Custom Components/Button";
 import { useAuthContext } from "../Context/Context";
+import { useHistory } from "react-router-dom";
 
 function SignInPage() {
-  const { googleSignIn, currentUser, registerUser } = useAuthContext();
+  const { googleSignIn, currentUser, registerUser, login } = useAuthContext();
+  let history = useHistory();
 
   const [signInState, setsignInState] = useState({
-    name: "",
     email: "",
     password: "",
   });
@@ -50,7 +51,7 @@ function SignInPage() {
     });
   };
 
-  const onSignInSubmit = (e) => {
+  const onSignUpSubmit = (e) => {
     e.preventDefault();
 
     const values = {
@@ -75,7 +76,39 @@ function SignInPage() {
     setshowMatched(false);
   };
 
-  // console.log(showMatched);
+  const onSignInSubmit = (e) => {
+    e.preventDefault();
+
+    const values = {
+      name: signInState.name,
+      email: signInState.email,
+      password: signInState.password,
+    };
+    login(values)
+      .then((res) => {
+        // console.log(res);
+        history.push("/");
+        setsignInState((prev) => {
+          return {
+            ...prev,
+            email: "",
+            password: "",
+          };
+        });
+      })
+      .catch((err) => alert(err));
+  };
+
+  const handleGoogleSignIn = () => {
+    googleSignIn()
+      .then((user) => {
+        // console.log(res);
+        history.push("/");
+      })
+      .catch((err) => alert(err));
+  };
+
+  // console.log(signInState);
   return (
     <Root>
       <Sign>
@@ -89,15 +122,8 @@ function SignInPage() {
             width: "100%",
           }}
           action=""
+          onSubmit={(e) => onSignInSubmit(e)}
         >
-          <label htmlFor="name">Full Name: </label>
-          <input
-            type="text"
-            name="name"
-            value={signInState.name}
-            onChange={(e) => handleInputChange(e.target.name, e.target.value)}
-            required
-          />
           <label htmlFor="email">Email: </label>
           <input
             type="email"
@@ -114,21 +140,19 @@ function SignInPage() {
             onChange={(e) => handleInputChange(e.target.name, e.target.value)}
             required
           />
-          {/* <div
-            style={{
-              display: "flex",
-              width: "80%",
-              justifyContent: "space-evenly",
-            }}
-          > */}
-          <button style={{ marginTop: "6rem" }} className="button">
+
+          <button
+            style={{ marginTop: "6rem" }}
+            className="button"
+            type="submit"
+          >
             Sign In
           </button>
-          {/* </div> */}
         </form>
         <button
           style={{ marginTop: "4rem", backgroundColor: "#4774fc" }}
           className="button"
+          onClick={handleGoogleSignIn}
         >
           Sign In With Google
         </button>
@@ -144,7 +168,7 @@ function SignInPage() {
             width: "100%",
           }}
           action=""
-          onSubmit={onSignInSubmit}
+          onSubmit={onSignUpSubmit}
         >
           <label htmlFor="name">Full Name: </label>
           <input

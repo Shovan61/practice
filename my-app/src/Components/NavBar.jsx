@@ -2,15 +2,21 @@ import React from "react";
 import styled from "styled-components";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { useHistory } from "react-router-dom";
+import { useAuthContext } from "../Context/Context";
 
 function NavBar() {
   let history = useHistory();
+  const { currentUser, logout } = useAuthContext();
 
   const gotoSignIn = () => {
     history.push("/sign");
   };
   const gotoHome = () => {
     history.push("/");
+  };
+
+  const handleLogOut = () => {
+    logout();
   };
 
   return (
@@ -22,7 +28,11 @@ function NavBar() {
       <NavContent>
         <span>SHOP</span>
         <span>CONTACT</span>
-        <span onClick={gotoSignIn}>SIGN IN</span>
+        {currentUser === null ? (
+          <span onClick={gotoSignIn}>SIGN IN</span>
+        ) : (
+          <span onClick={handleLogOut}>LOG OUT</span>
+        )}
         <AiOutlineShoppingCart />
       </NavContent>
     </Root>
