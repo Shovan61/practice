@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }) => {
 
   const registerUser = (data) => {
     const { name, email, password } = data;
-    return createUserWithEmailAndPassword(auth, name, email, password);
+    return createUserWithEmailAndPassword(auth, email, password);
   };
 
   const login = (data) => {
