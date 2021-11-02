@@ -2,8 +2,13 @@ import React from "react";
 import styled from "styled-components";
 import showcaseData from "../directory.data";
 import { ShowcaseItem } from "../Components";
+import useData from "../redux/useData";
 
 function Home() {
+  const { state, productFuntions } = useData();
+
+  const { setProducts } = productFuntions;
+
   return (
     <Wrapper>
       <Showcase>
